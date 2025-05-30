@@ -120,7 +120,7 @@ jobs:
         uses: softprops/action-gh-release@v2.0.6
         with:
           name: YTMusicUltimate v${{ inputs.ytm_version }}
-          files: YTMusicUltimate_v${{ inputs.ytm_version }}.ipa
+          files: main/packages/*_v${{ inputs.ytm_version }}.ipa
           tag_name: v${{ inputs.ytm_version }}
 
       - name: Output Release URL
