@@ -9,6 +9,12 @@ on:
         required: true
         type: string
 
+      ytm_version:
+        description: "The version of the youtube music. Enter the version"
+        default: "8.21"
+        required: true
+        type: string
+
       display_name:
         description: "App Name (Optional)"
         default: "YouTube Music"
@@ -113,9 +119,9 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2.0.6
         with:
-          name: YTMusicUltimate-v${{ github.run_number }}
-          files: main/packages/*.ipa
-          draft: true
+          name: YTMusicUltimate v${{ inputs.ytm_version }}
+          files: YTMusicUltimate_v${{ inputs.ytm_version }}.ipa
+          tag_name: v${{ inputs.ytm_version }}
 
       - name: Output Release URL
         run: |
