@@ -104,7 +104,7 @@ jobs:
           VERSION=$(grep -A 1 '<key>CFBundleVersion</key>' tmp_ipa/Payload/*.app/Info.plist | grep '<string>' | awk -F'[><]' '{print $3}')
           echo "YTM_VERSION=${VERSION}" >> $GITHUB_ENV
           echo "::notice::Detected App Version: ${VERSION}"
-          
+
       - name: Build Tweak for Sideloading
         id: build_package
         run: |
