@@ -118,14 +118,14 @@ jobs:
           cd ${{ github.workspace }}/main/packages
           tweakName=$(ls)
           cd ${{ github.workspace }}/main
-          cyan -i ytm.ipa -o packages/YTMusicUltimate_${{ VERSION }}.ipa -uwsf packages/$tweakName -n "${{ inputs.display_name }}" -b ${{ inputs.bundle_id }} 
+          cyan -i ytm.ipa -o packages/YTMusicUltimate_${{ env.YTM_VERSION }}.ipa -uwsf packages/$tweakName -n "${{ inputs.display_name }}" -b ${{ inputs.bundle_id }} 
 
       - name: Create Release
         uses: softprops/action-gh-release@v2.0.6
         with:
-          name: YTMusicUltimate v${{ VERSION }}
+          name: YTMusicUltimate v${{ env.YTM_VERSION }}
           files: main/packages/*.ipa
-          tag_name: v${{ VERSION }}
+          tag_name: v${{ env.YTM_VERSION }}
 
       - name: Output Release URL
         run: |
