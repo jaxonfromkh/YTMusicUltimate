@@ -94,11 +94,17 @@ jobs:
       - name: Download YouTube Music
         id: download_youtube_music
         run: |
+          echo "Downloading full IPA from URL..."
           wget "${{ inputs.ipa_url }}" --no-verbose -O ytm.ipa
-          mkdir -p tmp
-          unzip -q ytm.ipa -d tmp
-          echo "YTM_VERSION=$(grep -A 1 '<key>CFBundleVersion</key>' tmp/Payload/YouTubeMusic.app/Info.plist | grep '<string>' | awk -F'[><]' '{print $3}')" >> $GITHUB_ENV
 
+          echo "Extracting app version..."
+          mkdir -p tmp_ipa
+          unzip -q ytm.ipa -d tmp_ipa
+          
+          VERSION=$(grep -A 1 '<key>CFBundleVersion</key>' tmp_ipa/Payload/*.app/Info.plist | grep '<string>' | awk -F'[><]' '{print $3}')
+          echo "YTM_VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "::notice::Detected App Version: ${VERSION}"
+          
       - name: Build Tweak for Sideloading
         id: build_package
         run: |
@@ -112,14 +118,14 @@ jobs:
           cd ${{ github.workspace }}/main/packages
           tweakName=$(ls)
           cd ${{ github.workspace }}/main
-          cyan -i ytm.ipa -o packages/YTMusicUltimate_${{ env.YTM_VERSION }}.ipa -uwsf packages/$tweakName -n "${{ inputs.display_name }}" -b ${{ inputs.bundle_id }} 
+          cyan -i ytm.ipa -o packages/YTMusicUltimate_${{ VERSION }}.ipa -uwsf packages/$tweakName -n "${{ inputs.display_name }}" -b ${{ inputs.bundle_id }} 
 
       - name: Create Release
         uses: softprops/action-gh-release@v2.0.6
         with:
-          name: YTMusicUltimate v${{ env.YTM_VERSION }}
+          name: YTMusicUltimate v${{ VERSION }}
           files: main/packages/*.ipa
-          tag_name: v${{ env.YTM_VERSION }}
+          tag_name: v${{ VERSION }}
 
       - name: Output Release URL
         run: |
