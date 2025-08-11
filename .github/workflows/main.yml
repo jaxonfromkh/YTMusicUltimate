@@ -94,10 +94,10 @@ jobs:
       - name: Download YouTube Music
         id: download_youtube_music
         run: |
-          wget "${{ inputs.ipa_url }}" --no-verbose -O ${{ github.workspace }}/main/ytm.ipa
-          unzip -q ${{ github.workspace }}/ytm.ipa -d ${{ github.workspace }}/tmp
-          echo "YTM_VERSION=$(grep -A 1 '<key>CFBundleVersion</key>' ${{ github.workspace }}/tmp/Payload/YouTubeMusic.app/Info.plist | grep '<string>' | awk -F'[><]' '{print $3}')" >> $GITHUB_ENV
-          
+          wget "${{ inputs.ipa_url }}" --no-verbose -O ytm.ipa
+          mkdir -p tmp
+          unzip -q ytm.ipa -d tmp
+          echo "YTM_VERSION=$(grep -A 1 '<key>CFBundleVersion</key>' tmp/Payload/YouTubeMusic.app/Info.plist | grep '<string>' | awk -F'[><]' '{print $3}')" >> $GITHUB_ENV
 
       - name: Build Tweak for Sideloading
         id: build_package
