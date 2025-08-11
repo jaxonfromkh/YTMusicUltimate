@@ -95,11 +95,11 @@ jobs:
         id: download_youtube_music
         run: |
           echo "Downloading full IPA from URL..."
-          wget "${{ inputs.ipa_url }}" --no-verbose -O ytm.ipa
+          wget "${{ inputs.ipa_url }}" --no-verbose -O ${{ github.workspace }}/main/ytm.ipa
 
           echo "Extracting app version..."
           mkdir -p tmp_ipa
-          unzip -q ytm.ipa -d tmp_ipa
+          unzip -q ${{ github.workspace }}/main/ytm.ipa -d tmp_ipa
           
           VERSION=$(grep -A 1 '<key>CFBundleVersion</key>' tmp_ipa/Payload/*.app/Info.plist | grep '<string>' | awk -F'[><]' '{print $3}')
           echo "YTM_VERSION=${VERSION}" >> $GITHUB_ENV
